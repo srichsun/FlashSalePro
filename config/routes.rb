@@ -11,4 +11,10 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # Root page to list all coaches (Landing Page)
+  root "tenants#index"
+
+  # Individual coach room (SaaS Tenant Space)
+  resources :tenants, only: [:show]
 end

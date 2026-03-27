@@ -1,75 +1,79 @@
+
 # Fat Loss Pro - B2B2C Coaching SaaS
 
 ### Status: 🚧 Work In Progress (Phase 2)
 
+### 📖 [Detailed Technical Documentation & Wiki](https://github.com/srichsun/fatloss-pro-saas/wiki)
 ### 📖 [詳細技術文件與開發決策請參考專案 Wiki](https://github.com/srichsun/fatloss-pro-saas/wiki)
 
 -----
 
-### 🚀 專案願景 (Project Vision)
+### 🚀 Project Vision (專案願景)
 
-Fat Loss Pro 是一個專為「健身教練與個人工作室」打造的訂閱制管理平台。採用 **B2B2C (Business-to-Business-to-Consumer)** 架構，讓教練能擁有獨立的數位教室，向學員銷售減脂課程並追蹤健康數據。
+**English:**
+Fat Loss Pro is a subscription-based management platform tailored for fitness coaches and personal studios. Utilizing a **B2B2C (Business-to-Business-to-Consumer)** architecture, it empowers coaches with independent digital classrooms to sell fat-loss programs and track student health metrics seamlessly.
 
-### 🛠️ 技術選型與核心理念 (Technical Stack & Philosophy)
+**中文摘要：**
+Fat Loss Pro 是一個專為「健身教練與個人工作室」打造的 B2B2C 訂閱制管理平台，協助教練建立獨立數位教室，進行課程銷售與學員數據追蹤。
 
-本專案採用 **Rails 8 (Main Branch)** 架構，專注於「極簡基礎設施、高性能、高安全性」。
+---
 
-  * **Rails 8 "Postgres-only" Stack**: 採用 `Solid Queue` 與 `Solid Cache`，移除對 Redis 的依賴，降低運維複雜度。
-  * **Multi-tenancy Isolation**: 透過 `tenant_id` 與 Controller Scoping 實作資料隔離，杜絕 **IDOR (Insecure Direct Object Reference)** 漏洞。
-  * **Hand-rolled Auth**: 捨棄 Devise，改採 `has_secure_password` 實作輕量化、高主導權的身份驗證流程。
-  * **Modern Frontend**: 結合 **Tailwind CSS** 與 **Hotwire (Turbo/Stimulus)**，提供 SPA 等級的流暢體驗。
+### 🛠️ Technical Stack & Philosophy (技術選型與核心理念)
 
------
+This project leverages **Rails 8 (Main Branch)**, focusing on "Minimalist Infrastructure, High Performance, and Security."
+(本專案採用 Rails 8 架構，專注於極簡基礎設施、高性能與安全性。)
 
-### 🚀 技術亮點 (Technical Highlights)
-
-#### 1\. 資料隔離與安全性 (Row-Level Isolation)
-
-  * **Scoped Querying**: 在 Controller 層級封裝 `current_tenant` 邏輯，所有資料查詢皆從租戶出發，從底層防止跨租戶存取風險。
-  * **Transactional Setup**: 在教練註冊時，使用 **Transaction** 確保 `Tenant`（組織）與 `User`（管理員）同時建立成功。
-
-#### 2\. 金流與訂單自動化 (Automation)
-
-  * **Precision Handling**: 使用 Rails `Attributes API` 處理金融金額，確保運算精確度。
-  * **Idempotency & Webhooks**: 整合 **Stripe API**，利用 Webhook 實作冪等性機制，確保自動化扣款與訂單狀態同步的準確性。
+* **Rails 8 "Postgres-only" Stack**: Utilizes `Solid Queue` and `Solid Cache` to eliminate Redis dependencies, reducing operational complexity. (採用 Solid Queue/Cache 移除對 Redis 的依賴，降低運維複雜度。)
+* **Multi-tenancy Isolation**: Implements data isolation via `tenant_id` and Controller Scoping to prevent **IDOR (Insecure Direct Object Reference)** vulnerabilities. (透過 tenant_id 實作資料隔離，杜絕 IDOR 安全漏洞。)
+* **Hand-rolled Auth**: Opted for a lightweight authentication flow via `has_secure_password` over Devise for maximum control and security transparency. (捨棄套件，採用原生方式實作輕量、高掌控度的身分驗證。)
+* **Modern Frontend**: Combines **Tailwind CSS** with **Hotwire (Turbo/Stimulus)** for an SPA-like user experience. (結合 Tailwind 與 Hotwire，提供如單頁式應用程式般的流暢體驗。)
 
 -----
 
-### 📈 開發進度 (Roadmap)
+### 🚀 Technical Highlights (技術亮點)
+
+#### 1. Row-Level Data Isolation (資料隔離與安全性)
+
+* **Scoped Querying**: Encapsulated `current_tenant` logic at the controller level. All data queries originate from the tenant to prevent cross-tenant access risks at the architectural level. (在 Controller 層級封裝租戶邏輯，所有查詢皆從租戶出發，從底層杜絕跨租戶存取風險。)
+* **Transactional Setup**: Utilizes **Database Transactions** during coach registration to ensure atomic creation of both `Tenant` (Organization) and `User` (Admin). (使用資料庫事務確保組織與管理員帳號同時建立成功。)
+
+#### 2. Financial & Order Automation (金流與訂單自動化)
+
+* **Precision Handling**: Leverages Rails `Attributes API` for monetary calculations to ensure mathematical precision. (使用 Attributes API 處理金額，確保財務運算的精確度。)
+* **Idempotency & Webhooks**: Integrated **Stripe API** with Webhooks and idempotency mechanisms to ensure accurate automated billing and order status synchronization. (整合 Stripe 並實作冪等性機制，確保自動化扣款與訂單狀態同步的準確性。)
+
+-----
+
+### 📈 Roadmap (開發進度)
 
 #### **Phase 1: SaaS Foundation (Completed)**
-
-  - [x] **Multi-tenant Architecture**: 實作 `Tenant` 與 `User` 的關聯與資料隔離牆。
-  - [x] **Custom Auth System**: 實作基於 Session 的輕量化驗證邏輯。
-  - [x] **Security Scoping**: 在 `ApplicationController` 強制執行租戶檢查與 RSpec 驗證。
+- [x] **Multi-tenant Architecture**: Tenant/User isolation walls. (實作租戶資料隔離牆)
+- [x] **Custom Auth System**: Session-based lightweight logic. (輕量化驗證邏輯)
+- [x] **Security Scoping**: Enforced checks in `ApplicationController` with RSpec validation. (強制執行租戶安全檢查)
 
 #### **Phase 2: Financial Integrity (In Progress)**
-
-  - [x] **Automated Order System**: 建立教練開單與學員加入流程。
-  - [ ] **Stripe Integration**: 實作自動化支付與 Webhook 狀態監聽。
-  - [ ] **Service Objects**: 封裝 `Orders::PlaceOrderService` 確保交易原子性。
+- [x] **Automated Order System**: Coach invoicing & student enrollment workflows. (自動化開單與入班流程)
+- [ ] **Stripe Integration**: Automated payments & Webhook listeners. (支付整合與監聽)
+- [ ] **Service Objects**: Encapsulating `Orders::PlaceOrderService` for transaction atomicity. (封裝 Service Object 確保交易原子性)
 
 #### **Phase 4: Real-time Data & Analytics (Planning)**
-
-  - [ ] **Health Dashboard**: 利用 Turbo Streams 實作無刷新體重追蹤圖表。
-  - [ ] **Data Visualization**: 導入 Chart.js 展示教練營收與學員進度。
-
------
-
-### 🛡️ 相關技術文件 (Documentation)
-
-本專案的深度設計細節已記錄於 Wiki：
-
-  * [📌 資料庫 Schema 設計] (待補：預計於 Phase 2 模型穩定後更新)
-  * [📌 API 整合與 Webhook 說明] (待補：Stripe 實作測試完成後更新)
+- [ ] **Health Dashboard**: Real-time weight tracking charts using Turbo Streams. (利用 Turbo Streams 實作無刷新數據圖表)
+- [ ] **Data Visualization**: Integrating Chart.js for revenue and student progress analytics. (導入數據視覺化展示營收與進度)
 
 -----
 
-### ⚡ 快速啟動 (Quick Start)
+### 🛡️ Documentation (相關技術文件)
 
-#### 1\. 啟動環境
+Deep design details are documented in the Wiki:
+* [📌 Database Schema Design] (Pending: Update after Phase 2 stabilization)
+* [📌 API Integration & Webhook Guide] (Pending: Update after Stripe testing)
 
-確保你的電腦已安裝 PostgreSQL。
+-----
+
+### ⚡ Quick Start (快速啟動)
+
+#### 1. Setup Environment
+Ensure PostgreSQL is installed on your local machine.
 
 ```bash
 # Clone the repository
@@ -86,9 +90,7 @@ bin/rails db:prepare
 bin/dev
 ```
 
-#### 2\. 執行測試 (Running Tests)
-
+#### 2. Running Tests
 ```bash
 bundle exec rspec
 ```
-

@@ -1,0 +1,43 @@
+class FlashOrdersController < ApplicationController
+  # This controller handles high-concurrency grab requests from fans
+  
+  def create
+    @campaign = FlashCampaign.find(params[:campaign_sale_id])
+
+    # 1. Open a transaction to ensure all database operations are atomic
+    FlashOrder.transaction do
+      # 2. Pessimistic Locking: SELECT ... FOR UPDATE
+      # This locks the row so no other request can modify the stock simultaneously
+      @campaign.lock!
+
+      if @campaign.remaining_stock > 0
+        @order = @campaign.flash_orders.new(order_params)
+
+        if @order.save
+          # 3. Decrement stock directly within the same lock
+          @campaign.update!(remaining_stock: @campaign.remaining_stock - 1)
+          
+          redirect_to campaign_sale_path(@campaign), notice: "Success! You've secured your spot."
+        else
+          # If form validation fails, redirect back with error messages
+          redirect_to campaign_sale_path(@campaign), alert: @order.errors.full_messages.join(", ")
+          raise ActiveRecord::Rollback
+        end
+      else
+        # 4. Handle Out of Stock scenario
+        redirect_to campaign_sale_path(@campaign), alert: "Sorry, this item is sold out!"
+      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: "Campaign not found."
+  rescue => e
+    logger.error "Flash Order Failure: #{e.message}"
+    redirect_to campaign_sale_path(@campaign), alert: "An error occurred, please try again."
+  end
+
+  private
+
+  def order_params
+    params.require(:flash_order).permit(:name, :email, :phone)
+  end
+end

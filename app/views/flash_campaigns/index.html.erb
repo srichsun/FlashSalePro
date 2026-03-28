@@ -1,0 +1,34 @@
+<div class="p-6">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Flash Sale Campaigns</h1>
+    <%= link_to "+ Create Activity", new_flash_campaign_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg" %>
+  </div>
+
+  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+    <table class="w-full text-left">
+      <thead class="text-gray-400 text-sm uppercase">
+        <tr>
+          <th class="pb-4">Product</th>
+          <th class="pb-4">Stock Status</th>
+          <th class="pb-4">Ends At</th>
+          <th class="pb-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @flash_campaigns.each do |campaign| %>
+          <tr class="text-gray-700">
+            <td class="py-4 font-medium"><%= campaign.title %></td>
+            <td class="py-4">
+              <span class="text-blue-600 font-bold"><%= campaign.remaining_stock %></span> 
+              / <%= campaign.total_stock %>
+            </td>
+            <td class="py-4"><%= campaign.expired_at.strftime("%b %d, %H:%M") %></td>
+            <td class="py-4">
+              <%= link_to "Copy Link", campaign_sale_path(campaign), class: "text-blue-500 hover:underline" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

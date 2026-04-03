@@ -10,6 +10,14 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Add more helper methods to be used in all tests here...
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  # Signs in via the real login flow so session and redirects match production.
+  def login_as(user, password: "password")
+    post login_path, params: { email: user.email, password: password }
+    follow_redirect! while response.redirect?
   end
 end

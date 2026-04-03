@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   end
 
   # Individual coach room (SaaS Tenant Space)
-  resources :tenants, only: [ :show ]
+  resources :tenants, only: [ :index, :show ]
   resources :orders
 
   # Define a dynamic parameter named :subdomain

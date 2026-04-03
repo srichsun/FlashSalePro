@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
     @orders = @orders_scope.includes(:client).order(created_at: :desc)
 
     # Business Metrics: Aggregating order data for the dashboard stats
-    
+
     # 1. Monthly Revenue: Sum of all paid orders within the current month
     @monthly_revenue = @orders_scope.paid
                                     .where(created_at: Time.current.all_month)
@@ -24,7 +24,7 @@ class OrdersController < ApplicationController
     # Pre-set the client and generate a unique idempotency key for financial safety
     @order = @orders_scope.new(client_id: params[:client_id])
     @order.idempotency_key = SecureRandom.uuid
-    
+
     @clients = current_tenant.users.where(role: :client)
   end
 
@@ -32,7 +32,7 @@ class OrdersController < ApplicationController
     # Always initialize through the scoped association for security
     @order = @orders_scope.new(order_params)
     @order.coach = current_user
-    
+
     if @order.save
       # [Future Work]: Trigger ActiveJob for email notifications here
       redirect_to @order, notice: "Order created and sent successfully."

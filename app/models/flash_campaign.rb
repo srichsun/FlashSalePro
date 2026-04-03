@@ -1,7 +1,7 @@
 class FlashCampaign < ApplicationRecord
   # Each campaign belongs to a specific coach/tenant
   belongs_to :tenant
-  
+
   # A campaign can have many orders
   has_many :flash_orders, dependent: :destroy
 

@@ -20,8 +20,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.string "name", null: false
     t.bigint "record_id", null: false
     t.string "record_type", null: false
-    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
-    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+    t.index [ "blob_id" ], name: "index_active_storage_attachments_on_blob_id"
+    t.index [ "record_type", "record_id", "name", "blob_id" ], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
@@ -33,13 +33,13 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.string "key", null: false
     t.text "metadata"
     t.string "service_name", null: false
-    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+    t.index [ "key" ], name: "index_active_storage_blobs_on_key", unique: true
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+    t.index [ "blob_id", "variation_digest" ], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "flash_campaigns", force: :cascade do |t|
@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.string "title"
     t.integer "total_stock", default: 0
     t.datetime "updated_at", null: false
-    t.index ["tenant_id"], name: "index_flash_campaigns_on_tenant_id"
+    t.index [ "tenant_id" ], name: "index_flash_campaigns_on_tenant_id"
     t.check_constraint "remaining_stock >= 0", name: "stock_cannot_be_negative"
   end
 
@@ -64,8 +64,8 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.string "phone"
     t.string "status", default: "pending"
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_flash_orders_on_email"
-    t.index ["flash_campaign_id"], name: "index_flash_orders_on_flash_campaign_id"
+    t.index [ "email" ], name: "index_flash_orders_on_email"
+    t.index [ "flash_campaign_id" ], name: "index_flash_orders_on_flash_campaign_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -78,11 +78,11 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.integer "status", default: 0, null: false
     t.bigint "tenant_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["client_id"], name: "index_orders_on_client_id"
-    t.index ["coach_id"], name: "index_orders_on_coach_id"
-    t.index ["idempotency_key"], name: "index_orders_on_idempotency_key", unique: true
-    t.index ["tenant_id", "client_id", "status"], name: "idx_orders_on_tenant_client_status"
-    t.index ["tenant_id"], name: "index_orders_on_tenant_id"
+    t.index [ "client_id" ], name: "index_orders_on_client_id"
+    t.index [ "coach_id" ], name: "index_orders_on_coach_id"
+    t.index [ "idempotency_key" ], name: "index_orders_on_idempotency_key", unique: true
+    t.index [ "tenant_id", "client_id", "status" ], name: "idx_orders_on_tenant_client_status"
+    t.index [ "tenant_id" ], name: "index_orders_on_tenant_id"
   end
 
   create_table "tenants", force: :cascade do |t|
@@ -92,7 +92,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.integer "orders_count"
     t.string "subdomain"
     t.datetime "updated_at", null: false
-    t.index ["invitation_token"], name: "index_tenants_on_invitation_token", unique: true
+    t.index [ "invitation_token" ], name: "index_tenants_on_invitation_token", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -103,7 +103,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_03_28_065556) do
     t.integer "role"
     t.bigint "tenant_id", null: false
     t.datetime "updated_at", null: false
-    t.index ["tenant_id"], name: "index_users_on_tenant_id"
+    t.index [ "tenant_id" ], name: "index_users_on_tenant_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

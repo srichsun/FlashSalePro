@@ -1,6 +1,6 @@
 class FlashOrdersController < ApplicationController
   # This controller handles high-concurrency grab requests from fans
-  
+
   def create
     @campaign = FlashCampaign.find(params[:campaign_sale_id])
 
@@ -19,7 +19,7 @@ class FlashOrdersController < ApplicationController
 
           # Use deliver_later to send email in background (Asynchronous)
           OrderMailer.confirmation_email(@order).deliver_later
-          
+
           redirect_to campaign_sale_path(@campaign), notice: "Success! You've secured your spot."
         else
           # If form validation fails, redirect back with error messages

@@ -3,12 +3,12 @@ class CreateFlashOrders < ActiveRecord::Migration[8.2]
     create_table :flash_orders do |t|
       # Link each order to a specific flash sale campaign
       t.references :flash_campaign, null: false, foreign_key: true
-      
+
       # Minimalist fields for faster checkout conversion
       t.string :email, null: false
       t.string :name
       t.string :phone
-      
+
       # Tracking order status (e.g., pending, paid, cancelled)
       t.string :status, default: 'pending'
 

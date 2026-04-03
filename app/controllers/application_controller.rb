@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   # Core SaaS security gates
   before_action :set_current_tenant
-  
+
   # Define helper methods for use in Views and Controllers
   helper_method :current_user, :logged_in?, :current_tenant
 

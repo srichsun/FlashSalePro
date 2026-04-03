@@ -1,15 +1,15 @@
 class Order < ApplicationRecord
   # Performance: counter_cache updates tenants.orders_count automatically
-  belongs_to :tenant, counter_cache: true 
+  belongs_to :tenant, counter_cache: true
   # Specify class_name as User because the column name is coach_id / client_id
-  belongs_to :coach, class_name: 'User'
-  belongs_to :client, class_name: 'User'
+  belongs_to :coach, class_name: "User"
+  belongs_to :client, class_name: "User"
 
   enum :status, { pending: 0, paid: 1, cancelled: 2 }, default: :pending
 
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :description, presence: true
-  
+
   # Audit Integrity: Prevent editing core data after payment is confirmed
   validate :prevent_changes_after_paid, on: :update
 

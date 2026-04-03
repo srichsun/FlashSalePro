@@ -1,7 +1,7 @@
 # app/controllers/registrations_controller.rb
 class RegistrationsController < ApplicationController
   # Registration does not require login
-  skip_before_action :set_current_tenant, only: [:new, :create]
+  skip_before_action :set_current_tenant, only: [ :new, :create ]
 
   def new
     if params[:token].present?
@@ -53,7 +53,7 @@ class RegistrationsController < ApplicationController
   def create_client_from_invitation
     @tenant = Tenant.find_by!(invitation_token: params[:invitation_token])
     @user = @tenant.users.new(user_params.merge(role: :student))
-    
+
     if @user.save
       session[:user_id] = @user.id
       redirect_to dashboard_path, notice: "Welcome to #{@tenant.name}!"
